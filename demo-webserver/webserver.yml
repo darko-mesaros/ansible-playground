@@ -1,23 +1,33 @@
 --- 
 - name: Install nginx 
   hosts: all 
-	vars:
-		location_here: 'Subotica'
+  vars:
+    location_here: 'Subotica'
+    packages:
+      - nginx
+      - vim
+      - htop
+      - transmission-daemon
+    services:
+      - nginx
+      - transmission-daemon
   become: true 
  
   tasks: 
-    - name: Install nginx 
-      yum: 
-        name: nginx 
-        state: present 
-    - name: Start NGiNX 
+    - name: Install packages 
+      package:
+        name: "{{ packages }}"
+    - name: Start services 
       service: 
-        name: nginx 
+        name: "{{ services }}" 
         state: started 
     - name: Modify Web 
       copy: 
         content: '<h2>Hello from {{ location_here }}</h2>' 
-        dest: /usr/share/nginx/html/index.html 
+        dest: /var/www/html/index.html 
+    - name: Create group wheel
+      group:
+        name: wheel
     - name: Create user Darko 
       user: 
         name: darko 
