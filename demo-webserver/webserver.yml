@@ -7,10 +7,8 @@
       - nginx
       - vim
       - htop
-      - transmission-daemon
     services:
       - nginx
-      - transmission-daemon
   become: true 
  
   tasks: 
